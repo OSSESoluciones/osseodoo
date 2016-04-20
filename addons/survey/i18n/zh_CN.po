@@ -5,16 +5,17 @@
 # Translators:
 # eden.chen <ccskysea@gmail.com>, 2015
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2012,2014
-# leangjia <liangjia@qq.com>, 2015
-# mrshelly <mrshelly@hotmail.com>, 2015
+# 珠海-老天 <liangjia@qq.com>, 2015
+# mrshelly <mrshelly@hotmail.com>, 2015-2016
 # THL <wt39181819@gmail.com>, 2015
+# 珠海-老天 <liangjia@qq.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo 8.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-01-21 14:07+0000\n"
-"PO-Revision-Date: 2015-08-20 10:58+0000\n"
-"Last-Translator: leangjia <liangjia@qq.com>\n"
+"PO-Revision-Date: 2016-01-15 02:40+0000\n"
+"Last-Translator: mrshelly <mrshelly@hotmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/odoo/odoo-8/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -843,7 +844,7 @@ msgstr "标签序列顺序"
 #: model:ir.actions.act_window,name:survey.action_survey_label_form
 #: model:ir.ui.menu,name:survey.menu_survey_label_form1
 msgid "Labels"
-msgstr "标签打印"
+msgstr "Labels"
 
 #. module: survey
 #: field:survey.survey,message_last_post:0
@@ -913,17 +914,17 @@ msgstr "手工"
 #. module: survey
 #: selection:survey.question,type:0
 msgid "Matrix"
-msgstr ""
+msgstr "表格"
 
 #. module: survey
 #: field:survey.question,matrix_subtype:0
 msgid "Matrix Type"
-msgstr ""
+msgstr "表格类型"
 
 #. module: survey
 #: view:website:survey.result
 msgid "Matrix:"
-msgstr ""
+msgstr "表格："
 
 #. module: survey
 #: sql_constraint:survey.question:0
@@ -1090,12 +1091,12 @@ msgstr "通知合作伙伴"
 #. module: survey
 #: field:survey.mail.compose.message,notify:0
 msgid "Notify followers"
-msgstr ""
+msgstr "通知关注者"
 
 #. module: survey
 #: help:survey.mail.compose.message,notify:0
 msgid "Notify followers of the document (mass post only)"
-msgstr ""
+msgstr "通知此文档的追随者（只用于批量发送）"
 
 #. module: survey
 #: selection:survey.user_input_line,answer_type:0
@@ -1131,12 +1132,12 @@ msgstr "数值"
 #. module: survey
 #: field:survey.user_input_line,value_number:0
 msgid "Numerical answer"
-msgstr ""
+msgstr "数字答案"
 
 #. module: survey
 #: view:website:survey.result_number
 msgid "Occurence"
-msgstr ""
+msgstr "发生"
 
 #. module: survey
 #: selection:survey.question,matrix_subtype:0
@@ -1372,7 +1373,7 @@ msgstr "没有答案"
 #. module: survey
 #: field:survey.question,labels_ids_2:0
 msgid "Rows of the Matrix"
-msgstr "矩阵行数"
+msgstr "表格行数"
 
 #. module: survey
 #: model:survey.label,value:survey.frow_2_7_4
@@ -1903,7 +1904,7 @@ msgstr "这些安全规则是标准化的,在大多数情况下是能够开箱�
 #. module: survey
 #: field:survey.survey,title:0
 msgid "Title"
-msgstr "称谓"
+msgstr "标题"
 
 #. module: survey
 #: field:survey.mail.compose.message,to_read:0

@@ -68,7 +68,7 @@ def keep_query(*keep_params, **additional_params):
     for keep_param in keep_params:
         for param in fnmatch.filter(qs_keys, keep_param):
             if param not in additional_params and param in qs_keys:
-                params[param] = ','.join(request.httprequest.args.getlist(param))
+                params[param] = request.httprequest.args.getlist(param)
     return werkzeug.urls.url_encode(params)
 
 class view_custom(osv.osv):
@@ -118,11 +118,6 @@ class view(osv.osv):
         result.update(map(itemgetter('res_id', 'id'), data_ids))
         return result
 
-    def _views_from_model_data(self, cr, uid, ids, context=None):
-        IMD = self.pool['ir.model.data']
-        data_ids = IMD.search_read(cr, uid, [('id', 'in', ids), ('model', '=', 'ir.ui.view')], ['res_id'], context=context)
-        return map(itemgetter('res_id'), data_ids)
-
     _columns = {
         'name': fields.char('View Name', required=True),
         'model': fields.char('Object', select=True),
@@ -141,11 +136,7 @@ class view(osv.osv):
         'inherit_id': fields.many2one('ir.ui.view', 'Inherited View', ondelete='restrict', select=True),
         'inherit_children_ids': fields.one2many('ir.ui.view','inherit_id', 'Inherit Views'),
         'field_parent': fields.char('Child Field'),
-        'model_data_id': fields.function(_get_model_data, type='many2one', relation='ir.model.data', string="Model Data",
-                                         store={
-                                             _name: (lambda s, c, u, i, ctx=None: i, None, 10),
-                                             'ir.model.data': (_views_from_model_data, ['model', 'res_id'], 10),
-                                         }),
+        'model_data_id': fields.function(_get_model_data, type='many2one', relation='ir.model.data', string="Model Data", store=True),
         'xml_id': fields.function(osv.osv.get_xml_id, type='char', size=128, string="External ID",
                                   help="ID of the view defined in xml file"),
         'groups_id': fields.many2many('res.groups', 'ir_ui_view_group_rel', 'view_id', 'group_id',
@@ -407,7 +398,7 @@ class view(osv.osv):
     def inherit_branding(self, specs_tree, view_id, root_id):
         for node in specs_tree.iterchildren(tag=etree.Element):
             xpath = node.getroottree().getpath(node)
-            if node.tag == 'data' or node.tag == 'xpath':
+            if node.tag == 'data' or node.tag == 'xpath' or node.get('position') or node.get('t-field'):
                 self.inherit_branding(node, view_id, root_id)
             else:
                 node.set('data-oe-id', str(view_id))
@@ -518,10 +509,15 @@ class view(osv.osv):
                     requested (similar to ``id``)
         """
         if context is None: context = {}
+        context = context.copy()
 
         # if view_id is not a root view, climb back to the top.
         base = v = self.browse(cr, uid, view_id, context=context)
+        check_view_ids = context.setdefault('check_view_ids', [])
         while v.mode != 'primary':
+            # Add inherited views to the list of loading forced views
+            # Otherwise, inherited views could not find elements created in their direct parents if that parent is defined in the same module
+            check_view_ids.append(v.id)
             v = v.inherit_id
         root_id = v.id
 
@@ -1105,6 +1101,7 @@ class view(osv.osv):
                    LEFT JOIN ir_model_data md ON (md.model = 'ir.ui.view' AND md.res_id = v.id)
                        WHERE md.module IS NULL
                          AND v.model = %s
+                         AND v.active = true
                     GROUP BY coalesce(v.inherit_id, v.id)
                    """, (model,))
 
